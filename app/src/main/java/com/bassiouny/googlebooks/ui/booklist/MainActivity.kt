@@ -1,7 +1,8 @@
-package com.bassiouny.googlebooks
+package com.bassiouny.googlebooks.ui.booklist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bassiouny.googlebooks.R
 
 class MainActivity : AppCompatActivity() {
 

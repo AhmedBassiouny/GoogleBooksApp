@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bassiouny.googlebooks.R
 import com.bassiouny.googlebooks.base.BaseFragment
+import com.bassiouny.googlebooks.network.Client
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class BooksFragment : BaseFragment<BooksPresenter>(), BooksView {
     private lateinit var recyclerView: RecyclerView
+    private var client = Client()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,6 +25,7 @@ class BooksFragment : BaseFragment<BooksPresenter>(), BooksView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupList()
+        presenter.onViewCreated()
     }
 
     private fun setupList() {
@@ -28,7 +33,10 @@ class BooksFragment : BaseFragment<BooksPresenter>(), BooksView {
     }
 
     override fun instantiatePresenter(): BooksPresenter {
-        return BooksPresenter(this)
+        return BooksPresenter(this,
+            AndroidSchedulers.mainThread(),
+            Schedulers.io(),
+            client.getService())
     }
 
 }

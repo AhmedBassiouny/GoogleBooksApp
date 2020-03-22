@@ -37,23 +37,4 @@ class BooksPresenter(
                     )
         }
     }
-
-    fun fetchBookDetails(bookId: String) {
-        if (subscription == null) {
-            subscription =
-                booksInteractor.getBookDetails(mainThread, io, bookId, api)
-                    ?.subscribe(
-                        { bookDetailsResponse ->
-                            if (bookDetailsResponse.id == "" || bookDetailsResponse.id.isEmpty()) {
-                                // TODO: show no books view
-                            }
-                            subscription = null
-                        },
-                        {
-                            // TODO: handel error
-                            subscription = null
-                        }
-                    )
-        }
-    }
 }

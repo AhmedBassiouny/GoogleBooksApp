@@ -11,7 +11,9 @@ import com.bassiouny.googlebooks.model.Item
 import kotlinx.android.synthetic.main.book_item.view.*
 
 class RepoAdapter(
-    private var items: ArrayList<Item>?, private val context: Context
+    private var items: ArrayList<Item>?,
+    private val context: Context,
+    private val onClickListener: (Int) -> Unit
 ) :
     RecyclerView.Adapter<RepoAdapter.BooksViewHolder>() {
 
@@ -27,6 +29,9 @@ class RepoAdapter(
 
     override fun onBindViewHolder(holder: BooksViewHolder, position: Int) {
         holder.name.text = items?.get(position)?.volumeInfo?.title
+        holder.item.setOnClickListener {
+            onClickListener(position)
+        }
     }
 
     fun updateData(fetchedBooks: java.util.ArrayList<Item>) {

@@ -1,11 +1,15 @@
 package com.bassiouny.googlebooks.ui.booklist
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bassiouny.googlebooks.R
@@ -13,6 +17,7 @@ import com.bassiouny.googlebooks.base.BaseFragment
 import com.bassiouny.googlebooks.model.BooksResponse
 import com.bassiouny.googlebooks.model.Item
 import com.bassiouny.googlebooks.network.Client
+import com.bassiouny.googlebooks.ui.bookdetails.BookDetailsActivity
 import com.mancj.materialsearchbar.MaterialSearchBar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -44,7 +49,7 @@ class BooksFragment : BaseFragment<BooksPresenter>(),
     private fun setupList() {
         context.let {
             viewManager = LinearLayoutManager(it)
-            viewAdapter = RepoAdapter(fetchedBooks, it!!)
+            viewAdapter = RepoAdapter(fetchedBooks, it!!){ position -> itemClicked(position)}
         }
 
         recyclerView = books.apply {
@@ -89,5 +94,12 @@ class BooksFragment : BaseFragment<BooksPresenter>(),
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-
+    private fun itemClicked(position : Int) {
+        Toast.makeText(context, "Clicked: $position", Toast.LENGTH_SHORT).show()
+        val sharedPreferences: SharedPreferences? = context?.getSharedPreferences("default", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
+        editor?.putString("bookId", fetchedBooks[position].id)
+        editor?.apply()
+        startActivity(Intent(context, BookDetailsActivity::class.java))
+    }
 }

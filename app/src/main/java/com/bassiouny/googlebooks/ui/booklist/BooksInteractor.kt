@@ -1,5 +1,6 @@
 package com.bassiouny.googlebooks.ui.booklist
 
+import com.bassiouny.googlebooks.model.BookDetailsResponse
 import com.bassiouny.googlebooks.model.BooksResponse
 import com.bassiouny.googlebooks.network.BooksApi
 import io.reactivex.Observable
@@ -14,6 +15,18 @@ class BooksInteractor {
     ): Observable<BooksResponse>? {
 
         return api.search(keyword)
+            .observeOn(mainThread)
+            .subscribeOn(io)
+    }
+
+    fun getBookDetails(
+        mainThread: Scheduler,
+        io: Scheduler,
+        id: String,
+        api: BooksApi
+    ): Observable<BookDetailsResponse>? {
+
+        return api.getBookDetails(id)
             .observeOn(mainThread)
             .subscribeOn(io)
     }

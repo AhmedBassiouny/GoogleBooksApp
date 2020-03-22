@@ -21,11 +21,30 @@ class BooksPresenter(
     fun fetchBooks(searchText: String) {
         if (subscription == null) {
             subscription =
-                booksInteractor.getBooks(mainThread, io, searchText, api)!!
-                    .subscribe(
+                booksInteractor.getBooks(mainThread, io, searchText, api)
+                    ?.subscribe(
                         { booksResponse ->
                             view.updateList(booksResponse)
                             if (booksResponse.items == null || booksResponse.items.isEmpty()) {
+                                // TODO: show no books view
+                            }
+                            subscription = null
+                        },
+                        {
+                            // TODO: handel error
+                            subscription = null
+                        }
+                    )
+        }
+    }
+
+    fun fetchBookDetails(bookId: String) {
+        if (subscription == null) {
+            subscription =
+                booksInteractor.getBookDetails(mainThread, io, bookId, api)
+                    ?.subscribe(
+                        { bookDetailsResponse ->
+                            if (bookDetailsResponse.id == "" || bookDetailsResponse.id.isEmpty()) {
                                 // TODO: show no books view
                             }
                             subscription = null

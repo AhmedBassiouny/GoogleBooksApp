@@ -24,7 +24,7 @@ class BooksFragment : BaseFragment<BooksPresenter>(), BooksView {
     }
 
     private fun setupList() {
-        TODO("Not yet implemented")
+
     }
 
     override fun instantiatePresenter(): BooksPresenter {

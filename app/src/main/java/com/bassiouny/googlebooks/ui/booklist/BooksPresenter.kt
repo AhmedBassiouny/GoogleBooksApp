@@ -20,21 +20,28 @@ class BooksPresenter(
 
     fun fetchBooks(searchText: String) {
         if (subscription == null) {
+            view.showLoading()
             subscription =
                 booksInteractor.getBooks(mainThread, io, searchText, api)
                     ?.subscribe(
                         { booksResponse ->
                             view.updateList(booksResponse)
                             if (booksResponse.items == null || booksResponse.items.isEmpty()) {
-                                // TODO: show no books view
+                                view.noResults()
                             }
+                            view.hideLoading()
                             subscription = null
                         },
                         {
-                            // TODO: handel error
+                            view.showError("error")
+                            view.hideLoading()
                             subscription = null
                         }
                     )
         }
+    }
+
+    override fun onViewDestroyed() {
+        subscription?.dispose()
     }
 }

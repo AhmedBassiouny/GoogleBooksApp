@@ -49,7 +49,7 @@ class BooksFragment : BaseFragment<BooksPresenter>(),
     private fun setupList() {
         context.let {
             viewManager = LinearLayoutManager(it)
-            viewAdapter = RepoAdapter(fetchedBooks, it!!){ position -> itemClicked(position)}
+            viewAdapter = RepoAdapter(fetchedBooks, it!!) { position -> itemClicked(position) }
         }
 
         recyclerView = books.apply {
@@ -62,6 +62,10 @@ class BooksFragment : BaseFragment<BooksPresenter>(),
     override fun updateList(booksResponse: BooksResponse?) {
         fetchedBooks = booksResponse?.items as ArrayList<Item>
         viewAdapter.updateData(fetchedBooks)
+    }
+
+    override fun noResults() {
+        Toast.makeText(context, "lk", Toast.LENGTH_LONG).show()
     }
 
     override fun instantiatePresenter(): BooksPresenter {
@@ -94,12 +98,25 @@ class BooksFragment : BaseFragment<BooksPresenter>(),
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun itemClicked(position : Int) {
+    private fun itemClicked(position: Int) {
         Toast.makeText(context, "Clicked: $position", Toast.LENGTH_SHORT).show()
-        val sharedPreferences: SharedPreferences? = context?.getSharedPreferences("default", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences? =
+            context?.getSharedPreferences("default", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
         editor?.putString("bookId", fetchedBooks[position].id)
         editor?.apply()
         startActivity(Intent(context, BookDetailsActivity::class.java))
+    }
+
+    override fun showError(error: String) {
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showLoading() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        progressBar.visibility = View.GONE
     }
 }

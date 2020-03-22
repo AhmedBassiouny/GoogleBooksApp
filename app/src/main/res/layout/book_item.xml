@@ -24,7 +24,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
-            fresco:placeholderImage="@drawable/abc_vector_test"
+            fresco:placeholderImage="@drawable/ic_launcher_background"
             android:padding="10dp"
             android:scaleType="fitXY"
             fresco:roundAsCircle="true"

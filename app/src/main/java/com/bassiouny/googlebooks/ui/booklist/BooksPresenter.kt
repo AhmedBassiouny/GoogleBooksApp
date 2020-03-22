@@ -18,7 +18,7 @@ class BooksPresenter(
         fetchBooks("flowers")
     }
 
-    private fun fetchBooks(searchText: String) {
+    fun fetchBooks(searchText: String) {
         if (subscription == null) {
             subscription =
                 booksInteractor.getBooks(mainThread, io, searchText, api)!!
